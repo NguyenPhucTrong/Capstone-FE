@@ -49,10 +49,14 @@ export class ChatBotPagesComponent implements OnInit, AfterViewChecked {
     if (this.userInput.trim() && this.canSendMessage) {
       this.messages.push({ text: this.userInput, type: MessageType.User });
       this.userInput = '';
+
       this.canSendMessage = false;
+      const waitMessage: Message = { type: MessageType.Loading, text: "..." };
+      this.messages.push(waitMessage);
 
       // Simulate bot response
       setTimeout(() => {
+        this.messages.pop();
         this.messages.push({ text: 'Hello! How can I help you?', type: MessageType.Bot });
         this.canSendMessage = true;
         this.scrollToBottom();
