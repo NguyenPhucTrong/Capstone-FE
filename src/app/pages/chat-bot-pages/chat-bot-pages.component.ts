@@ -1,10 +1,6 @@
 import { Component, OnInit, AfterViewChecked, ElementRef, ViewChild, Input } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
 
 enum MessageType {
   Bot = 'bot',
@@ -23,21 +19,19 @@ interface Message {
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatButtonModule,
-    MatCardModule,
-    MatInputModule,
-    MatIconModule
+    FormsModule
   ],
   templateUrl: './chat-bot-pages.component.html',
   styleUrls: ['./chat-bot-pages.component.css']
 })
 export class ChatBotPagesComponent implements OnInit, AfterViewChecked {
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
-  @Input() public display!: string;
+  @Input() display!: string;
 
   public form!: FormGroup;
   public messages: Array<Message> = [];
-  public canSendMessage = true;
+  public userInput: string = '';
+  private canSendMessage = true;
 
   constructor(private formBuilder: FormBuilder) { }
 
@@ -51,11 +45,10 @@ export class ChatBotPagesComponent implements OnInit, AfterViewChecked {
     this.scrollToBottom();
   }
 
-  onClickSendMessage(): void {
-    if (this.form.valid && this.canSendMessage) {
-      const message = this.form.get('message')?.value;
-      this.messages.push({ text: message, type: MessageType.User });
-      this.form.reset();
+  sendMessage(): void {
+    if (this.userInput.trim() && this.canSendMessage) {
+      this.messages.push({ text: this.userInput, type: MessageType.User });
+      this.userInput = '';
       this.canSendMessage = false;
 
       // Simulate bot response
@@ -67,12 +60,12 @@ export class ChatBotPagesComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  public onClickEnter(event: Event): void {
+  onEnter(event: Event): void {
     const keyboardEvent = event as KeyboardEvent;
-    keyboardEvent.preventDefault();
-    this.onClickSendMessage();
-  }
+    event.preventDefault();
+    this.sendMessage();
 
+  }
 
   private scrollToBottom(): void {
     this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
