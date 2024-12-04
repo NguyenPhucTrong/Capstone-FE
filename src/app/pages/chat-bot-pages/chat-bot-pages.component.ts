@@ -1,6 +1,9 @@
-import { Component, OnInit, AfterViewChecked, ElementRef, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, ElementRef, ViewChild, Input, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ChatHeaderComponent } from "./chat-header/chat-header.component";
+import { ChatContentComponent } from "./chat-content/chat-content.component";
+import { ChatActionComponent } from './chat-action/chat-action.component';
 
 enum MessageType {
   Bot = 'bot',
@@ -19,12 +22,15 @@ interface Message {
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    ChatHeaderComponent,
+    ChatContentComponent,
+    ChatActionComponent
   ],
   templateUrl: './chat-bot-pages.component.html',
   styleUrls: ['./chat-bot-pages.component.css']
 })
-export class ChatBotPagesComponent implements OnInit, AfterViewChecked {
+export class ChatBotPagesComponent implements OnInit, AfterViewInit {
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
   @Input() display!: string;
 
@@ -71,7 +77,13 @@ export class ChatBotPagesComponent implements OnInit, AfterViewChecked {
 
   }
 
+  ngAfterViewInit(): void {
+    this.scrollToBottom();
+  }
+
   private scrollToBottom(): void {
-    this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+    if (this.messageContainer && this.messageContainer.nativeElement) {
+      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+    }
   }
 }
