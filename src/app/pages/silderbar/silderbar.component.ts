@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
+import { SidebarSearchComponent } from "./siderbar-search/siderbar-search.component";
 
 @Component({
-  selector: 'app-silderbar',
+  selector: 'app-sidebar',
   standalone: true,
-  imports: [],
+  imports: [SidebarSearchComponent],
   templateUrl: './silderbar.component.html',
   styleUrl: './silderbar.component.css'
 })
-export class SilderbarComponent {
+export class SidebarComponent {
 
 }

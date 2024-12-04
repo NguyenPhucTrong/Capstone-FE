@@ -1,8 +1,8 @@
-<div class="flex flex-row">
-  <div>
-    <app-silderbar></app-silderbar>
+<div class="flex flex-row h-screen w-screen">
+  <div class="min-w-80 bg-gray-300 h-full">
+    <app-sidebar></app-sidebar>
   </div>
-  <div>
+  <div class="flex-grow h-full">
     <app-chat-bot-pages [display]="displayType.Fixed"></app-chat-bot-pages>
   </div>
 </div>
