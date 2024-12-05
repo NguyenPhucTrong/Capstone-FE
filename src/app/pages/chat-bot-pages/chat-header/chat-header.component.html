@@ -1,10 +1,16 @@
-<div class="flex flex-row-reverse items-center bg-blue-600 text-white px-4 py-2">
-  <img src="geng.jpeg" alt="Chatbot Icon" class="w-8 h-8 rounded-full mr-3">
-  <div>
-    <h1 class="text-lg font-medium">Chatbot</h1>
-    <div class="flex items-center gap-1 text-sm">
-      <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-      <span>Online</span>
+<div class="flex flex-row-reverse items-center bg-blue-600 text-black h-16 px-4 py-2 relative">
+  <div class="relative" (mouseenter)="showProfileOptions()" (mouseleave)="hideProfileOptions()">
+    <img src="geng.jpeg" alt="Chatbot Icon" class="w-10 h-10 rounded-full mr-3 cursor-pointer">
+    <div *ngIf="showOptions" class="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg">
+      <div class="p-2 cursor-pointer hover:bg-gray-200 flex items-center" (click)="profile()">
+        <i class="fa fa-user mr-2"></i> Profile
+      </div>
+      <div class="p-2 cursor-pointer hover:bg-gray-200 flex items-center" (click)="logout()">
+        <i class="fa fa-sign-out-alt mr-2"></i> Logout
+      </div>
     </div>
   </div>
+  <button (click)="addNewChat()"
+    class="bg-green-500 text-white p-2 rounded ml-4 hover:bg-white hover:text-black shadow absolute left-[20%] ">Thêm
+    đoạn chat mới </button>
 </div>

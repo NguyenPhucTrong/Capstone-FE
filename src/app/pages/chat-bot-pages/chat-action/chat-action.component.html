@@ -1,5 +1,9 @@
 <!-- chat-actions.component.html -->
 <div class="p-4 bg-white border-t flex w-full">
+  <input type="file" (change)="onFileSelected($event)" class="hidden" #fileInput>
+  <button (click)="fileInput.click()" class="bg-white text-black w-10 p-2 hover:bg-gray-300 rounded mr-2">
+    <i class="fa-solid fa-link text-center"></i>
+  </button>
   <input [(ngModel)]="userInput" (ngModelChange)="onUserInputChange($event)" type="text"
     class="flex-grow p-2 border rounded mr-2" placeholder="Type your message..." (keydown.enter)="onEnter($event)">
   <button (click)="sendMessage.emit()" class="bg-blue-500 text-white p-2 rounded">Send</button>

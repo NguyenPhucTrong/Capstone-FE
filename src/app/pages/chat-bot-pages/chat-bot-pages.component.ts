@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewChecked, ElementRef, ViewChild, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, ElementRef, ViewChild, Input, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ChatHeaderComponent } from "./chat-header/chat-header.component";
@@ -14,6 +14,8 @@ enum MessageType {
 interface Message {
   text?: string;
   type: MessageType;
+  file?: File;
+
 }
 
 @Component({
@@ -34,6 +36,7 @@ export class ChatBotPagesComponent implements OnInit, AfterViewInit {
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
   @Input() display!: string;
   @Input() messages: Message[] = [];
+  @Output() newChatAdded = new EventEmitter<any>();
 
 
   public form!: FormGroup;
@@ -87,4 +90,16 @@ export class ChatBotPagesComponent implements OnInit, AfterViewInit {
       this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
     }
   }
+
+  addNewChat() {
+    this.messages = [{ text: " Hello! How can I help you? ", type: MessageType.Bot }];
+    this.scrollToBottom();
+    this.newChatAdded.emit({ summary: "New Chat", fullChat: this.messages });
+  }
+
+  onFileSelected(file: File): void {
+    this.messages.push({ text: `File selected: ${file.name}`, file, type: MessageType.User });
+    this.scrollToBottom();
+  }
+
 }

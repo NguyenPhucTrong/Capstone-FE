@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ChatBotPagesComponent } from "./pages/chat-bot-pages/chat-bot-pages.component";
 import { SidebarComponent } from "./pages/silderbar/silderbar.component";
@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  @ViewChild(SidebarComponent) sidebarComponent!: SidebarComponent;
   isSidebarOpen: boolean = true;
   selectedChat: any[] = [];
 
@@ -23,5 +24,9 @@ export class AppComponent {
   onChatSelected(chat: any[]) {
     console.log(chat); // Verify the emitted event
     this.selectedChat = chat;
+  }
+
+  onNewChatAdded(chat: any) {
+    this.sidebarComponent.addChatToHistory(chat);
   }
 }

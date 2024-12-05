@@ -1,8 +1,15 @@
 <div class="p-4">
   <h2 class="text-lg font-bold mb-4 text-center">Chat History</h2>
   <div *ngFor="let chat of chatHistory"
-    class="mb-4 p-4 border-b border-gray-300 cursor-pointer hover:bg-gray-200 w-[320px] rounded-lg"
-    (click)="selectChat(chat)">
-    <div class="text-md font-medium">{{ chat.summary }}</div>
+    class="mb-4 p-4 border-b border-gray-300 cursor-pointer hover:bg-gray-200 w-[320px] rounded-lg relative"
+    (mouseenter)="showOptions(chat)" (mouseleave)="hideOptions(chat)">
+    <div class="text-md font-medium" (click)="selectChat(chat)">{{ chat.summary }}</div>
+    <div class="absolute top-2 right-2">
+      <i class="fa fa-ellipsis-v mr-2 mt-3 cursor-pointer"></i>
+      <div *ngIf="chat.showOptions" class="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg">
+        <div class="p-2 cursor-pointer hover:bg-gray-200" (click)="renameChat(chat)">Rename</div>
+        <div class="p-2 cursor-pointer hover:bg-gray-200" (click)="deleteChat(chat)">Delete</div>
+      </div>
+    </div>
   </div>
 </div>

@@ -13,6 +13,8 @@ export class ChatActionComponent {
   @Input() userInput: string = '';
   @Output() userInputChange = new EventEmitter<string>();
   @Output() sendMessage = new EventEmitter<void>();
+  @Output() fileSelected = new EventEmitter<File>();
+
 
   onEnter(event: Event): void {
     const keyboardEvent = event as KeyboardEvent;
@@ -23,5 +25,13 @@ export class ChatActionComponent {
   onUserInputChange(value: string): void {
     this.userInput = value;
     this.userInputChange.emit(this.userInput);
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.fileSelected.emit(file);
+    }
   }
 }

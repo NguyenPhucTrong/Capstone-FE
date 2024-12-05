@@ -1,12 +1,13 @@
 <div class="flex flex-col h-screen bg-gray-100">
   <!-- Header -->
-  <app-chat-header></app-chat-header>
+  <app-chat-header (newChat)="addNewChat()"></app-chat-header>
 
   <!-- Chat Content -->
   <app-chat-content [messages]="messages" class="flex-grow"></app-chat-content>
 
 
   <!-- Chat Actions -->
-  <app-chat-action [(userInput)]="userInput" (sendMessage)="sendMessage()"></app-chat-action>
+  <app-chat-action [(userInput)]="userInput" (sendMessage)="sendMessage()"
+    (fileSelected)="onFileSelected($event)"></app-chat-action>
 
 </div>
