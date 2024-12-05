@@ -33,9 +33,10 @@ interface Message {
 export class ChatBotPagesComponent implements OnInit, AfterViewInit {
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
   @Input() display!: string;
+  @Input() messages: Message[] = [];
+
 
   public form!: FormGroup;
-  public messages: Array<Message> = [];
   public userInput: string = '';
   private canSendMessage = true;
 

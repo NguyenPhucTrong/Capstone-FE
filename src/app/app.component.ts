@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ChatBotPagesComponent } from "./pages/chat-bot-pages/chat-bot-pages.component";
-import { DisplayType } from './shared/enums/display-type.enum';
 import { SidebarComponent } from "./pages/silderbar/silderbar.component";
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -11,13 +10,18 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [RouterOutlet, ChatBotPagesComponent, SidebarComponent, FormsModule, CommonModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   isSidebarOpen: boolean = true;
+  selectedChat: any[] = [];
 
   toggleSidebar() {
-
     this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  onChatSelected(chat: any[]) {
+    console.log(chat); // Verify the emitted event
+    this.selectedChat = chat;
   }
 }
