@@ -6,7 +6,7 @@
     <div class="text-md font-medium" (click)="selectChat(chat)">{{ chat.summary }}</div>
     <div class="absolute top-2 right-2">
       <i class="fa fa-ellipsis-v mr-2 mt-3 cursor-pointer"></i>
-      <div *ngIf="chat.showOptions" class="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg">
+      <div *ngIf="chat.showOptions" class="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-10">
         <div class="p-2 cursor-pointer hover:bg-gray-200" (click)="renameChat(chat)">Rename</div>
         <div class="p-2 cursor-pointer hover:bg-gray-200" (click)="deleteChat(chat)">Delete</div>
       </div>
