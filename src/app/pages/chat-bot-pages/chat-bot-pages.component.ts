@@ -15,7 +15,7 @@ enum MessageType {
 }
 
 interface Message {
-  text?: string;
+  text?: any;
   type: MessageType;
   file?: File;
 
@@ -58,40 +58,30 @@ export class ChatBotPagesComponent implements OnInit, AfterViewInit {
     this.scrollToBottom();
   }
 
-  sendMessage(): void {
+  async sendMessage(): Promise<void> {
     if (this.userInput.trim() && this.canSendMessage) {
       this.messages.push({ text: this.userInput, type: MessageType.User });
       const userMessage = this.userInput;
+      console.log(userMessage);
       this.userInput = '';
 
       this.canSendMessage = false;
       const waitMessage: Message = { type: MessageType.Loading, text: "..." };
       this.messages.push(waitMessage);
 
-      // Fetch response from the API
-
-      this.dataService.getChatBotResponse(userMessage).subscribe((response) => {
+      try {
+        const response = await this.dataService.getChatBotResponse(userMessage);
+        console.log(response);
         this.messages.pop();
-        this.messages.push({ text: response.answer, type: MessageType.Bot });
-        this.canSendMessage = true;
-        this.scrollToBottom();
-      }, error => {
+        this.messages.push({ text: response.data.Answer, type: MessageType.Bot });
+      } catch (error) {
         this.messages.pop();
-        this.messages.push({ text: "Sorry, I can't answer that right now", type: MessageType.Bot });
-        this.canSendMessage = true;
-        this.scrollToBottom();
+        this.messages.push({ text: `Sorry, I can't answer that right now ${error}`, type: MessageType.Bot });
         console.error('Error from API:', error);
-
-      })
-
-
-      // mô phỏng phản hồi từ bot
-      // setTimeout(() => {
-      //   this.messages.pop();
-      //   this.messages.push({ text: 'Hello! How can I help you?', type: MessageType.Bot });
-      //   this.canSendMessage = true;
-      //   this.scrollToBottom();
-      // }, 2000);
+      } finally {
+        this.canSendMessage = true;
+        this.scrollToBottom();
+      }
     }
   }
 
