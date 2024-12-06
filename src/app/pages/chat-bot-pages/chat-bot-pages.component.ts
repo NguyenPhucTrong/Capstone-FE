@@ -1,9 +1,12 @@
+import { DataService } from "./../../services/data.service";
 import { Component, OnInit, AfterViewChecked, ElementRef, ViewChild, Input, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ChatHeaderComponent } from "./chat-header/chat-header.component";
 import { ChatContentComponent } from "./chat-content/chat-content.component";
 import { ChatActionComponent } from './chat-action/chat-action.component';
+import { error } from "console";
+import { HttpClient, HttpClientModule } from "@angular/common/http";
 
 enum MessageType {
   Bot = 'bot',
@@ -43,7 +46,7 @@ export class ChatBotPagesComponent implements OnInit, AfterViewInit {
   public userInput: string = '';
   private canSendMessage = true;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private dataService: DataService) { }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -58,19 +61,37 @@ export class ChatBotPagesComponent implements OnInit, AfterViewInit {
   sendMessage(): void {
     if (this.userInput.trim() && this.canSendMessage) {
       this.messages.push({ text: this.userInput, type: MessageType.User });
+      const userMessage = this.userInput;
       this.userInput = '';
 
       this.canSendMessage = false;
       const waitMessage: Message = { type: MessageType.Loading, text: "..." };
       this.messages.push(waitMessage);
 
-      // Simulate bot response
-      setTimeout(() => {
+      // Fetch response from the API
+
+      this.dataService.getChatBotResponse(userMessage).subscribe((response) => {
         this.messages.pop();
-        this.messages.push({ text: 'Hello! How can I help you?', type: MessageType.Bot });
+        this.messages.push({ text: response.answer, type: MessageType.Bot });
         this.canSendMessage = true;
         this.scrollToBottom();
-      }, 2000);
+      }, error => {
+        this.messages.pop();
+        this.messages.push({ text: "Sorry, I can't answer that right now", type: MessageType.Bot });
+        this.canSendMessage = true;
+        this.scrollToBottom();
+        console.error('Error from API:', error);
+
+      })
+
+
+      // mô phỏng phản hồi từ bot
+      // setTimeout(() => {
+      //   this.messages.pop();
+      //   this.messages.push({ text: 'Hello! How can I help you?', type: MessageType.Bot });
+      //   this.canSendMessage = true;
+      //   this.scrollToBottom();
+      // }, 2000);
     }
   }
 
