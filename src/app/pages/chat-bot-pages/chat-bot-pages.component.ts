@@ -5,8 +5,7 @@ import { CommonModule } from '@angular/common';
 import { ChatHeaderComponent } from "./chat-header/chat-header.component";
 import { ChatContentComponent } from "./chat-content/chat-content.component";
 import { ChatActionComponent } from './chat-action/chat-action.component';
-import { error } from "console";
-import { HttpClient, HttpClientModule } from "@angular/common/http";
+
 
 enum MessageType {
   Bot = 'bot',

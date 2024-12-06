@@ -1,4 +1,4 @@
-<div class="relative flex flex-row h-screen w-screen">
+<div class="relative flex flex-row h-screen w-screen overflow-hidden">
   <div [ngClass]="{'w-80': isSidebarOpen, 'w-0': !isSidebarOpen, 'transition-all duration-1000 ease-in-out': true}"
     class="bg-gray-300 h-full overflow-hidden relative">
     <app-sidebar *ngIf="isSidebarOpen" (chatSelected)="onChatSelected($event)"></app-sidebar>
