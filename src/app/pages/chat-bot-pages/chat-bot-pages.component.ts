@@ -1,9 +1,11 @@
+import { DataService } from "./../../services/data.service";
 import { Component, OnInit, AfterViewChecked, ElementRef, ViewChild, Input, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ChatHeaderComponent } from "./chat-header/chat-header.component";
 import { ChatContentComponent } from "./chat-content/chat-content.component";
 import { ChatActionComponent } from './chat-action/chat-action.component';
+
 
 enum MessageType {
   Bot = 'bot',
@@ -12,7 +14,7 @@ enum MessageType {
 }
 
 interface Message {
-  text?: string;
+  text?: any;
   type: MessageType;
   file?: File;
 
@@ -43,7 +45,7 @@ export class ChatBotPagesComponent implements OnInit, AfterViewInit {
   public userInput: string = '';
   private canSendMessage = true;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private dataService: DataService) { }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -55,22 +57,30 @@ export class ChatBotPagesComponent implements OnInit, AfterViewInit {
     this.scrollToBottom();
   }
 
-  sendMessage(): void {
+  async sendMessage(): Promise<void> {
     if (this.userInput.trim() && this.canSendMessage) {
       this.messages.push({ text: this.userInput, type: MessageType.User });
+      const userMessage = this.userInput;
+      console.log(userMessage);
       this.userInput = '';
 
       this.canSendMessage = false;
       const waitMessage: Message = { type: MessageType.Loading, text: "..." };
       this.messages.push(waitMessage);
 
-      // Simulate bot response
-      setTimeout(() => {
+      try {
+        const response = await this.dataService.getChatBotResponse(userMessage);
+        console.log(response);
         this.messages.pop();
-        this.messages.push({ text: 'Hello! How can I help you?', type: MessageType.Bot });
+        this.messages.push({ text: response.data.Answer, type: MessageType.Bot });
+      } catch (error) {
+        this.messages.pop();
+        this.messages.push({ text: `Sorry, I can't answer that right now ${error}`, type: MessageType.Bot });
+        console.error('Error from API:', error);
+      } finally {
         this.canSendMessage = true;
         this.scrollToBottom();
-      }, 2000);
+      }
     }
   }
 

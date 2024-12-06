@@ -1,0 +1,5 @@
+.chat-message {
+  max-width: 75%; /* Giới hạn chiều rộng tối đa */
+  word-wrap: break-word; /* Ngắt dòng nếu quá dài */
+  overflow-wrap: anywhere; /* Ngắt từ dài bất kỳ đâu */
+}
