@@ -1,0 +1,13 @@
+<div class="relative flex flex-row h-screen w-screen overflow-hidden">
+  <div [ngClass]="{'w-80': isSidebarOpen, 'w-0': !isSidebarOpen, 'transition-all duration-1000 ease-in-out': true}"
+    class="bg-gray-300 h-full overflow-hidden relative">
+    <app-sidebar *ngIf="isSidebarOpen" (chatSelected)="onChatSelected($event)"></app-sidebar>
+    <i *ngIf="isSidebarOpen" (click)="toggleSidebar()"
+      class="fa-solid fa-arrow-left absolute top-1/2 left-[90%] mr-1 transform -translate-y-1/2 -translate-x-1/2 bg-white p-2 hover:bg-gray-300 rounded-full text-2xl cursor-pointer shadow-md"></i>
+  </div>
+  <i *ngIf="!isSidebarOpen" (click)="toggleSidebar()"
+    class="fa-solid fa-arrow-right absolute top-1/2 left-[1%] transform -translate-y-1/2 bg-gray-300 hover:bg-white p-2 rounded-full text-2xl cursor-pointer shadow-md"></i>
+  <div class="flex-grow h-full">
+    <app-chat-bot-pages [messages]="selectedChat" (newChatAdded)="onNewChatAdded($event)"></app-chat-bot-pages>
+  </div>
+</div>
